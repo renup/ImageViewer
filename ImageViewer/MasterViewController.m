@@ -8,12 +8,15 @@
 
 #import "MasterViewController.h"
 #import "JsonManager.h"
+#import "ImageManager.h"
 
 #import "DetailViewController.h"
 
 @interface MasterViewController () {
     NSArray *_objects;
     JsonManager *jsonManagerObj;
+    ImageManager *imageManagerObj;
+    NSCache *_cache;
 }
 @end
 
@@ -32,10 +35,11 @@
 
 //    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
 //    self.navigationItem.rightBarButtonItem = addButton;
-    
+    _cache = [[NSCache alloc] init];
     jsonManagerObj = [[JsonManager alloc] init];
     [jsonManagerObj writeJsonToDocumentsDirectory];
     _objects = [jsonManagerObj fetchedData];
+    imageManagerObj = [[ImageManager alloc] init];
 }
 
 - (void)didReceiveMemoryWarning
@@ -68,11 +72,40 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }else{
+        NSLog(@"Reused cell");
+    }
+   
     NSDictionary *object = _objects[indexPath.row];
     
     id captionStr = [object objectForKey:@"caption"];
+      id cellImageStr = [object objectForKey:@"thumb"];
+    
+    if (cellImageStr != [NSNull null]) {
+        UIImage *cellPic = [_cache objectForKey: [NSString stringWithFormat:@"image%i", indexPath.row]];
+        if (cellPic) {
+            cell.imageView.image = [_cache objectForKey: [NSString stringWithFormat:@"image%i", indexPath.row]];
+        }else{
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul), ^{
+                NSURL *imageURL = [NSURL URLWithString:cellImageStr];
+                NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+                UIImage *image = [UIImage imageWithData:imageData];
+                UIImage *resizedImage = [imageManagerObj imageWithImage:image];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    cell.imageView.image = resizedImage;
+                });
+                [_cache setObject:resizedImage forKey:[NSString stringWithFormat:@"image%i", indexPath.row]];
+            });
+        }
+    }
+    
     NSString *caption = @"";
     if (captionStr != [NSNull null]){
         caption = (NSString *)captionStr;
@@ -118,8 +151,7 @@
 {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        NSDate *object = _objects[indexPath.row];
-        [[segue destinationViewController] setDetailItem:object];
+        [[segue destinationViewController] setOriginalImageString: [_objects[indexPath.row] objectForKey:@"original"]];
     }
 }
 

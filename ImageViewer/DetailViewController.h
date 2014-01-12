@@ -10,7 +10,7 @@
 
 @interface DetailViewController : UIViewController
 
-@property (strong, nonatomic) id detailItem;
+@property (strong, nonatomic) IBOutlet UIImageView *cellImageView;
+@property (strong, nonatomic) NSString *originalImageString;
 
-@property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
 @end

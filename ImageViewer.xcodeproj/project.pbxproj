@@ -23,6 +23,8 @@
 		AF3BFAB3187FB41E0088198B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AF3BFAB1187FB41E0088198B /* InfoPlist.strings */; };
 		AF3BFAB5187FB41E0088198B /* ImageViewerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3BFAB4187FB41E0088198B /* ImageViewerTests.m */; };
 		AF3BFAC01880E8E50088198B /* JsonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3BFABF1880E8E50088198B /* JsonManager.m */; };
+		AF3BFAC31881AF8A0088198B /* BaseTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3BFAC21881AF8A0088198B /* BaseTextCell.m */; };
+		AF3BFAC61881BB700088198B /* ImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3BFAC51881BB700088198B /* ImageManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +61,10 @@
 		AF3BFAB4187FB41E0088198B /* ImageViewerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageViewerTests.m; sourceTree = "<group>"; };
 		AF3BFABE1880E8E50088198B /* JsonManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonManager.h; sourceTree = "<group>"; };
 		AF3BFABF1880E8E50088198B /* JsonManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsonManager.m; sourceTree = "<group>"; };
+		AF3BFAC11881AF8A0088198B /* BaseTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTextCell.h; sourceTree = "<group>"; };
+		AF3BFAC21881AF8A0088198B /* BaseTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTextCell.m; sourceTree = "<group>"; };
+		AF3BFAC41881BB700088198B /* ImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManager.h; sourceTree = "<group>"; };
+		AF3BFAC51881BB700088198B /* ImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +124,10 @@
 		AF3BFA8C187FB41E0088198B /* ImageViewer */ = {
 			isa = PBXGroup;
 			children = (
+				AF3BFAC11881AF8A0088198B /* BaseTextCell.h */,
+				AF3BFAC21881AF8A0088198B /* BaseTextCell.m */,
+				AF3BFAC41881BB700088198B /* ImageManager.h */,
+				AF3BFAC51881BB700088198B /* ImageManager.m */,
 				AF3BFA95187FB41E0088198B /* AppDelegate.h */,
 				AF3BFA96187FB41E0088198B /* AppDelegate.m */,
 				AF3BFA98187FB41E0088198B /* Main.storyboard */,
@@ -260,8 +270,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF3BFA97187FB41E0088198B /* AppDelegate.m in Sources */,
+				AF3BFAC61881BB700088198B /* ImageManager.m in Sources */,
 				AF3BFA9D187FB41E0088198B /* MasterViewController.m in Sources */,
 				AF3BFA93187FB41E0088198B /* main.m in Sources */,
+				AF3BFAC31881AF8A0088198B /* BaseTextCell.m in Sources */,
 				AF3BFAC01880E8E50088198B /* JsonManager.m in Sources */,
 				AF3BFAA0187FB41E0088198B /* DetailViewController.m in Sources */,
 			);
