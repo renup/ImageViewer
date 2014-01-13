@@ -39,5 +39,21 @@
 //    return roundedImage;
 //}
 
+#pragma mark - Image
++(UIImage*)imageFitInCenterForSize:(CGSize)inSize forSourceImage:(UIImage*)inImage
+{
+    // redraw the image to fit |yourView|'s size
+    CGSize imageOriginalSize = inImage.size;
+    UIImage *resultImage = nil;
+    if (imageOriginalSize.width<=inSize.width && imageOriginalSize.height<=inSize.height)
+    {
+        UIGraphicsBeginImageContextWithOptions(inSize, NO, 0.f);
+        [inImage drawInRect:CGRectMake((inSize.width-imageOriginalSize.width)/2.0, (inSize.height-imageOriginalSize.height)/2.0, imageOriginalSize.width, imageOriginalSize.height)];
+        resultImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    }
+    return resultImage;
+}
+
 
 @end

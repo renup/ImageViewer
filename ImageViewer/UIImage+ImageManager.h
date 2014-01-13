@@ -12,7 +12,7 @@
 
 - (UIImage *)resizeImageToWidth:(float)widthVal andHeight:(float)heightVal;
 //-(UIImage *)makeRoundedImage:(UIImage *) image radius: (float) radius;
-
++(UIImage*)imageFitInCenterForSize:(CGSize)inSize forSourceImage:(UIImage*)inImage;
 
 
 @end
