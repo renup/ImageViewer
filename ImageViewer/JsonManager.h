@@ -7,12 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ImageContent.h"
 
-@interface JsonManager : NSObject
+@interface JSONManager : NSObject
+
+@property (nonatomic, strong) NSMutableArray *imagesArray;
 
 //-(JsonManager *)init;
 
-- (void)writeJsonToDocumentsDirectory;
-- (NSArray *)fetchedData;
+//- (void)writeJsonToDocumentsDirectory;
+//- (NSArray *)fetchedData;
+
+-(void)parseJSONAndCreateImageContentObjects;
 
 @end

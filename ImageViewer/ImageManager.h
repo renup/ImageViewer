@@ -10,6 +10,8 @@
 
 @interface ImageManager : UIView
 
++(ImageManager *)sharedImageManager;
+
 - (UIImage *)imageWithImage:(UIImage *)image;
 
 @end

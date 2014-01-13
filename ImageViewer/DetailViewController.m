@@ -7,6 +7,8 @@
 //
 
 #import "DetailViewController.h"
+#import "FileDownloadManager.h"
+#import "MBProgressHUD.h"
 
 @interface DetailViewController (){
     NSCache *_cache;
@@ -21,27 +23,17 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    _cache = [[NSCache alloc] init];
-    
-    UIImage *originalPic = [_cache objectForKey:[NSString stringWithFormat:@"%@", self.originalImageString]];
+    UIImage *originalPic = [[AppCache sharedAppCache] getImageForString:self.originalImageString];
     
     if (originalPic) {
         self.cellImageView.image = originalPic;
     }else{
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul), ^{
-            
-            NSURL *orignialImageURL = [NSURL URLWithString:self.originalImageString];
-            NSData *originalImageData = [NSData dataWithContentsOfURL:orignialImageURL];
-            UIImage *image  = [UIImage imageWithData:originalImageData];
-            
-            if (image) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    self.cellImageView.image = image;
-                    [self.view setNeedsDisplay];
-                });
-                [_cache setObject:image forKey:[NSString stringWithFormat:@"%@", self.originalImageString]];
-            }
-        });
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [FileDownloadManager dowloadAndGetImageForImageString:self.originalImageString andResize:NO block:^(BOOL succeeded, UIImage *image, NSError *error) {
+            if (succeeded)
+                self.cellImageView.image = image;
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        }];
     }
 }
 

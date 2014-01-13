@@ -5,18 +5,16 @@
 //  Created by Renu P on 1/9/14.
 //  Copyright (c) 2014 Renu Punjabi. All rights reserved.
 //
-
+#import <QuartzCore/QuartzCore.h>
 #import "MasterViewController.h"
-#import "JsonManager.h"
-#import "ImageManager.h"
+#import "JSONManager.h"
+#import "FileDownloadManager.h"
 
 #import "DetailViewController.h"
 
 @interface MasterViewController () {
     NSArray *_objects;
-    JsonManager *jsonManagerObj;
-    ImageManager *imageManagerObj;
-    NSCache *_cache;
+    JSONManager *jsonManagerObj;
 }
 @end
 
@@ -30,16 +28,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-//    self.navigationItem.leftBarButtonItem = self.editButtonItem;
-
-//    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
-//    self.navigationItem.rightBarButtonItem = addButton;
-    _cache = [[NSCache alloc] init];
-    jsonManagerObj = [[JsonManager alloc] init];
-    [jsonManagerObj writeJsonToDocumentsDirectory];
-    _objects = [jsonManagerObj fetchedData];
-    imageManagerObj = [[ImageManager alloc] init];
+    
+    [FileDownloadManager downloadAndSaveJSON:kJSON_URL block:^(BOOL succeeded, NSError *error) {
+        if (!error) {
+            jsonManagerObj = [[JSONManager alloc] init];
+            [jsonManagerObj parseJSONAndCreateImageContentObjects];
+            _objects = jsonManagerObj.imagesArray;
+            [self.tableView reloadData];
+        }
+    }];
+    
+//    imageManagerObj = [[ImageManager alloc] init];
 }
 
 - (void)didReceiveMemoryWarning
@@ -47,16 +46,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-//- (void)insertNewObject:(id)sender
-//{
-//    if (!_objects) {
-//        _objects = [[NSMutableArray alloc] init];
-//    }
-//    [_objects insertObject:[NSDate date] atIndex:0];
-//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-//    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//}
 
 #pragma mark - Table View
 
@@ -81,37 +70,32 @@
     }else{
         NSLog(@"Reused cell");
     }
-   
-    NSDictionary *object = _objects[indexPath.row];
     
-    id captionStr = [object objectForKey:@"caption"];
-      id cellImageStr = [object objectForKey:@"thumb"];
+    cell.imageView.layer.backgroundColor=[[UIColor clearColor] CGColor];
+    cell.imageView.layer.cornerRadius=10;
+    cell.imageView.layer.borderWidth=1.50;
+    cell.imageView.layer.masksToBounds = YES;
+    cell.imageView.layer.borderColor=[[UIColor blackColor] CGColor];
     
-    if (cellImageStr != [NSNull null]) {
-        UIImage *cellPic = [_cache objectForKey: [NSString stringWithFormat:@"image%i", indexPath.row]];
-        if (cellPic) {
-            cell.imageView.image = [_cache objectForKey: [NSString stringWithFormat:@"image%i", indexPath.row]];
-        }else{
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul), ^{
-                NSURL *imageURL = [NSURL URLWithString:cellImageStr];
-                NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
-                UIImage *image = [UIImage imageWithData:imageData];
-                UIImage *resizedImage = [imageManagerObj imageWithImage:image];
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    cell.imageView.image = resizedImage;
-                });
-                [_cache setObject:resizedImage forKey:[NSString stringWithFormat:@"image%i", indexPath.row]];
-            });
-        }
+    ImageContent *imageContentobj = _objects[indexPath.row];
+
+    UIImage *thumbPic = [[AppCache sharedAppCache] getImageForString:imageContentobj.thumbImageStr];
+    if (thumbPic) {
+        
+        cell.imageView.image = thumbPic;
+        
+    }else{
+        cell.imageView.image = [UIImage imageNamed:@"Placeholder.png"];
+        
+        [FileDownloadManager dowloadAndGetImageForImageString:imageContentobj.thumbImageStr andResize:YES block:^(BOOL succeeded, UIImage *image, NSError *error) {
+            if (!error)
+                cell.imageView.image = image;
+            else
+                cell.imageView.image = [UIImage imageNamed:@"Placeholder.png"];
+        }];
     }
     
-    NSString *caption = @"";
-    if (captionStr != [NSNull null]){
-        caption = (NSString *)captionStr;
-        cell.textLabel.text = caption;
-    }
-    
+        cell.textLabel.text = imageContentobj.caption;
     return cell;
 }
 
@@ -151,7 +135,9 @@
 {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        [[segue destinationViewController] setOriginalImageString: [_objects[indexPath.row] objectForKey:@"original"]];
+        
+        ImageContent *imageContentobj = _objects[indexPath.row];
+        [[segue destinationViewController] setOriginalImageString:imageContentobj.originalImageStr];
     }
 }
 
