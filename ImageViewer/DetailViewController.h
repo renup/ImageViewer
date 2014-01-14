@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
+#import "SingletonHelper.h"
 
-@interface DetailViewController : UIViewController
+@interface DetailViewController : UIViewController <SingletonHelperDelegate>
 
 @property (strong, nonatomic) NSString *originalImageString;
 

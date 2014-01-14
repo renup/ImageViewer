@@ -9,11 +9,13 @@
 #import "MasterViewController.h"
 #import "FileDownloadManager.h"
 #import "ImageContent.h"
-
 #import "DetailViewController.h"
+#import "InternetConnectivityView.h"
 
 @interface MasterViewController () {
     NSMutableArray * _imageContentObjectsArr;
+    ImageContent *imageContentobj;
+    InternetConnectivityView * internetStatusView;
 }
 @end
 
@@ -27,6 +29,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [SingletonHelper sharedHelper].singletonHelperForViewControllerDelegate = self;
     
     [FileDownloadManager downloadAndGetJSONForURL:kJSON_URL block:^(BOOL succeeded, NSArray* jsonArr, NSError *error) {
         if (!error) {
@@ -45,6 +49,30 @@
             [self.tableView reloadData];
         }
     }];
+}
+
+#pragma mark SingletonHelperDelegate methods for internet connectivity
+
+-(void)activityCallBackWhenNoInternetConnectivity
+{
+    if (![SingletonHelper sharedHelper].internetConnectivity) {
+        internetStatusView = [[InternetConnectivityView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+        
+        [self.view addSubview:internetStatusView];
+    }
+}
+
+-(void)activityCallBackWhenInternetConnectivityIsEstablished
+{
+    if ([SingletonHelper sharedHelper].internetConnectivity) {
+        [UIView animateWithDuration:1.5 animations:^{
+            internetStatusView.frame = CGRectMake(CGRectGetMaxX(self.view.frame), CGRectGetMaxY(self.view.frame), self.view.frame.size.width, self.view.frame.size.height);
+        } completion:^(BOOL finished) {
+            UIView *subview = [self.view viewWithTag:14];
+            [subview removeFromSuperview];
+        }];
+
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -74,6 +102,7 @@
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+    cell.textLabel.numberOfLines = 0;
     
     cell.imageView.layer.backgroundColor=[[UIColor clearColor] CGColor];
     cell.imageView.layer.cornerRadius=10;
@@ -81,7 +110,7 @@
     cell.imageView.layer.masksToBounds = YES;
     cell.imageView.layer.borderColor=[[UIColor blackColor] CGColor];
     
-    ImageContent *imageContentobj = _imageContentObjectsArr[indexPath.row];
+    imageContentobj = _imageContentObjectsArr[indexPath.row];
 
     UIImage *thumbPic = [[AppCache sharedAppCache] getImageForKey:imageContentobj.thumbImageStr];
     if (thumbPic) {
@@ -103,6 +132,29 @@
         cell.textLabel.text = imageContentobj.caption;
     return cell;
 }
+
+#pragma mark - UITableViewDelegate methods
+
+//source: http://stackoverflow.com/questions/8831664/how-to-calculate-heightforrowatindexpath-for-cells-which-setup-via-switch-in-cel/8832778#8832778
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    imageContentobj = [_imageContentObjectsArr objectAtIndex:indexPath.row];
+    NSAttributedString * attributedString = [[NSAttributedString alloc] initWithString:imageContentobj.caption attributes:
+                                             @{ NSFontAttributeName: [UIFont systemFontOfSize:18]}];
+    
+    //its not possible to get the cell label width since this method is called before cellForRow so best we can do
+    //is get the table width and subtract the default extra space on either side of the label.
+    CGSize constraintSize = CGSizeMake(tableView.frame.size.width - 30, MAXFLOAT);
+    
+    CGRect rect = [attributedString boundingRectWithSize:constraintSize options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) context:nil];
+    
+    //Add back in the extra padding above and below label on table cell.
+    rect.size.height = rect.size.height + 43;
+    
+    //if height is smaller than a normal row set it to the normal cell height, otherwise return the bigger dynamic height.
+    return (rect.size.height < 44 ? 44 : rect.size.height);
+}
+
 
 //- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 //{
@@ -141,7 +193,7 @@
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         
-        ImageContent *imageContentobj = _imageContentObjectsArr[indexPath.row];
+        imageContentobj = _imageContentObjectsArr[indexPath.row];
         [[segue destinationViewController] setOriginalImageString:imageContentobj.originalImageStr];
     }
 }

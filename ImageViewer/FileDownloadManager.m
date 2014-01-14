@@ -11,6 +11,7 @@
 
 @implementation FileDownloadManager
 
+
 +(void)downloadTheFile:(NSString *)URLStr
                  block:(void (^)(BOOL succeeded, NSData *data, NSError *error))completionBlock
 {
@@ -38,8 +39,7 @@
                           block:(void (^)(BOOL succeeded, NSArray* jsonArr, NSError *error))blockForCompletion
 {
     //applications Documents directory path
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"data.json"];
     
