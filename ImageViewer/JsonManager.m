@@ -42,50 +42,6 @@
     }
 }
 
-//Source: http://stackoverflow.com/questions/20543206/saving-json-file-to-iphone
-//- (void)writeJsonToDocumentsDirectory
-//{
-//    //applications Documents dirctory path
-//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//    NSString *documentsDirectory = [paths objectAtIndex:0];
-//    
-//    filePath = [documentsDirectory stringByAppendingPathComponent:@"data.json"];
-//
-//    BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
-//    
-//    if (!fileExists) {
-//        
-//        //live json data url
-//        NSString *stringURL = @"http://dl.dropboxusercontent.com/u/89445730/images.json";
-//        NSURL *url = [NSURL URLWithString:stringURL];
-//        NSData *urlData = [NSData dataWithContentsOfURL:url];
-//        
-//        //attempt to download live data
-//        if (urlData)
-//        {
-//            //            NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"data.json"];
-//            [urlData writeToFile:filePath atomically:YES];
-//        }
-//    }
-//}
-
-//- (NSArray *)fetchedData
-//{
-//    NSData *fileData = [NSData dataWithContentsOfFile:filePath];
-//    
-//    //parse out the json data
-//    NSError* error;
-//    NSArray* json = [NSJSONSerialization
-//                          JSONObjectWithData:fileData //1
-//                          options:kNilOptions
-//                          error:&error];
-//    if (error) {
-//        NSLog(@"Error while fetching the Json data from documents directory : %@", error);
-//    }
-//    
-//    return json;
-//}
-
 
 
 @end

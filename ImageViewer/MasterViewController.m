@@ -7,14 +7,13 @@
 //
 #import <QuartzCore/QuartzCore.h>
 #import "MasterViewController.h"
-#import "JSONManager.h"
 #import "FileDownloadManager.h"
+#import "ImageContent.h"
 
 #import "DetailViewController.h"
 
 @interface MasterViewController () {
-    NSArray *_objects;
-    JSONManager *jsonManagerObj;
+    NSMutableArray * _imageContentObjectsArr;
 }
 @end
 
@@ -29,16 +28,23 @@
 {
     [super viewDidLoad];
     
-    [FileDownloadManager downloadAndSaveJSON:kJSON_URL block:^(BOOL succeeded, NSError *error) {
+    [FileDownloadManager downloadAndGetJSONForURL:kJSON_URL block:^(BOOL succeeded, NSArray* jsonArr, NSError *error) {
         if (!error) {
-            jsonManagerObj = [[JSONManager alloc] init];
-            [jsonManagerObj parseJSONAndCreateImageContentObjects];
-            _objects = jsonManagerObj.imagesArray;
+            
+            _imageContentObjectsArr = [NSMutableArray array];
+            for(NSDictionary *imageDict in jsonArr){
+                if (([imageDict objectForKey:kCaptionKey] != [NSNull null]) && ([imageDict objectForKey:kThumbImageKey] != [NSNull null]) && ([imageDict objectForKey:kOriginalImageKey]!= [NSNull null])) {
+                    ImageContent *imageContentObject = [[ImageContent alloc]
+                                                        initImageContentWithCaption:[imageDict objectForKey:kCaptionKey]
+                                                        thumbString:[imageDict objectForKey:kThumbImageKey]
+                                                        andOriginalImageString:[imageDict objectForKey:kOriginalImageKey]];
+                    
+                    [_imageContentObjectsArr addObject:imageContentObject];
+                }
+            }
             [self.tableView reloadData];
         }
     }];
-    
-//    imageManagerObj = [[ImageManager alloc] init];
 }
 
 - (void)didReceiveMemoryWarning
@@ -56,7 +62,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _objects.count;
+    return _imageContentObjectsArr.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -67,8 +73,6 @@
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }else{
-        NSLog(@"Reused cell");
     }
     
     cell.imageView.layer.backgroundColor=[[UIColor clearColor] CGColor];
@@ -77,17 +81,18 @@
     cell.imageView.layer.masksToBounds = YES;
     cell.imageView.layer.borderColor=[[UIColor blackColor] CGColor];
     
-    ImageContent *imageContentobj = _objects[indexPath.row];
+    ImageContent *imageContentobj = _imageContentObjectsArr[indexPath.row];
 
-    UIImage *thumbPic = [[AppCache sharedAppCache] getImageForString:imageContentobj.thumbImageStr];
+    UIImage *thumbPic = [[AppCache sharedAppCache] getImageForKey:imageContentobj.thumbImageStr];
     if (thumbPic) {
-        
         cell.imageView.image = thumbPic;
         
     }else{
         cell.imageView.image = [UIImage imageNamed:@"Placeholder.png"];
         
-        [FileDownloadManager dowloadAndGetImageForImageString:imageContentobj.thumbImageStr andResize:YES block:^(BOOL succeeded, UIImage *image, NSError *error) {
+        [FileDownloadManager downloadAndGetImageForURL:imageContentobj.thumbImageStr
+                                             andResize:YES
+                                                 block:^(BOOL succeeded, UIImage *image, NSError *error) {
             if (!error)
                 cell.imageView.image = image;
             else
@@ -108,7 +113,7 @@
 //- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 //{
 //    if (editingStyle == UITableViewCellEditingStyleDelete) {
-//        [_objects removeObjectAtIndex:indexPath.row];
+//        [_imageContentObjectsArr removeObjectAtIndex:indexPath.row];
 //        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 //    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
 //        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
@@ -136,7 +141,7 @@
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         
-        ImageContent *imageContentobj = _objects[indexPath.row];
+        ImageContent *imageContentobj = _imageContentObjectsArr[indexPath.row];
         [[segue destinationViewController] setOriginalImageString:imageContentobj.originalImageStr];
     }
 }

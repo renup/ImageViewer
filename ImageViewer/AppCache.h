@@ -13,6 +13,6 @@
 +(AppCache *)sharedAppCache;
 
 -(void)setImage:(UIImage *)pic forKey:(NSString *)picStr;
--(UIImage *)getImageForString:(NSString *)imageStr;
+-(UIImage *)getImageForKey:(NSString *)imageStr;
 
 @end

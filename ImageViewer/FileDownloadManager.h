@@ -10,11 +10,13 @@
 
 @interface FileDownloadManager : NSObject
 
-+(void)downloadAndSaveJSON:(NSString *)URLStr block:(void (^)(BOOL succeeded, NSError *error))blockForCompletion;
++(void)downloadAndGetImageForURL:(NSString *)imageString andResize:(BOOL)imageNeedResizing
+                          block:(void (^)(BOOL succeeded, UIImage *image, NSError *error))blockAfterCompletion;
 
-+(void)dowloadAndGetImageForImageString:(NSString *)imageString andResize:(BOOL)imageNeedResizing block:(void (^)(BOOL succeeded, UIImage *image, NSError *error))blockAfterCompletion;
++(void)downloadTheFile:(NSString *)URLStr
+                 block:(void (^)(BOOL succeeded, NSData *data, NSError *error))completionBlock;
 
-+(void)downloadTheFile:(NSString *)URLStr block:(void (^)(BOOL succeeded, NSData *data, NSError *error))completionBlock;
-
++(void)downloadAndGetJSONForURL:(NSString *)URLStr
+                          block:(void (^)(BOOL succeeded, NSArray* jsonArr, NSError *error))blockForCompletion;
 
 @end

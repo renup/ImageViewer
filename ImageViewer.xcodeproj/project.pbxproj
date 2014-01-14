@@ -34,6 +34,7 @@
 		AF8C0F0318839EE800BE2F25 /* Placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = AF8C0F0118839EE800BE2F25 /* Placeholder.png */; };
 		AF8C0F0418839EE800BE2F25 /* Placeholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AF8C0F0218839EE800BE2F25 /* Placeholder@2x.png */; };
 		AF8C0F0B1883B7B800BE2F25 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = AF8C0F0A1883B7B700BE2F25 /* MBProgressHUD.m */; };
+		AF8C0F0E1885281F00BE2F25 /* rogos.png in Resources */ = {isa = PBXBuildFile; fileRef = AF8C0F0D1885281F00BE2F25 /* rogos.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,7 @@
 		AF8C0F0218839EE800BE2F25 /* Placeholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Placeholder@2x.png"; sourceTree = "<group>"; };
 		AF8C0F091883B7B700BE2F25 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		AF8C0F0A1883B7B700BE2F25 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		AF8C0F0D1885281F00BE2F25 /* rogos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rogos.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,17 +149,14 @@
 		AF3BFA8C187FB41E0088198B /* ImageViewer */ = {
 			isa = PBXGroup;
 			children = (
-				AF8C0F081883B7A300BE2F25 /* External Libraries */,
+				AF8C0F0C1884E92600BE2F25 /* ViewControllers */,
 				AF3BFACE18827AC80088198B /* Model Classes */,
 				AF3BFACA18826E470088198B /* Helper Classes */,
 				AF3BFA95187FB41E0088198B /* AppDelegate.h */,
 				AF3BFA96187FB41E0088198B /* AppDelegate.m */,
 				AF3BFA98187FB41E0088198B /* Main.storyboard */,
-				AF3BFA9B187FB41E0088198B /* MasterViewController.h */,
-				AF3BFA9C187FB41E0088198B /* MasterViewController.m */,
-				AF3BFA9E187FB41E0088198B /* DetailViewController.h */,
-				AF3BFA9F187FB41E0088198B /* DetailViewController.m */,
 				AF3BFAA1187FB41E0088198B /* Images.xcassets */,
+				AF8C0F081883B7A300BE2F25 /* External Libraries */,
 				AF3BFA8D187FB41E0088198B /* Supporting Files */,
 			);
 			path = ImageViewer;
@@ -166,6 +165,7 @@
 		AF3BFA8D187FB41E0088198B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				AF8C0F0D1885281F00BE2F25 /* rogos.png */,
 				AF8C0F0118839EE800BE2F25 /* Placeholder.png */,
 				AF8C0F0218839EE800BE2F25 /* Placeholder@2x.png */,
 				AF8C0EFC18836FC700BE2F25 /* ThumbnailPlaceholder@2x.png */,
@@ -231,6 +231,17 @@
 				AF8C0F0A1883B7B700BE2F25 /* MBProgressHUD.m */,
 			);
 			name = "External Libraries";
+			sourceTree = "<group>";
+		};
+		AF8C0F0C1884E92600BE2F25 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				AF3BFA9B187FB41E0088198B /* MasterViewController.h */,
+				AF3BFA9C187FB41E0088198B /* MasterViewController.m */,
+				AF3BFA9E187FB41E0088198B /* DetailViewController.h */,
+				AF3BFA9F187FB41E0088198B /* DetailViewController.m */,
+			);
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -315,6 +326,7 @@
 				AF3BFA91187FB41E0088198B /* InfoPlist.strings in Resources */,
 				AF3BFA9A187FB41E0088198B /* Main.storyboard in Resources */,
 				AF8C0EFE18836FC700BE2F25 /* ThumbnailPlaceholder@2x.png in Resources */,
+				AF8C0F0E1885281F00BE2F25 /* rogos.png in Resources */,
 				AF8C0F0418839EE800BE2F25 /* Placeholder@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

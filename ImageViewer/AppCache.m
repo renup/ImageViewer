@@ -32,24 +32,6 @@ static AppCache *sharedAppCacheObj = nil;
 }
 
 
-//+(AppCache *)sharedAppCache
-//{
-//    dispatch_once_t pred = 0;
-//    __strong static AppCache *sharedAppCacheObj = nil;
-//    dispatch_once(&pred, ^{
-//        sharedAppCacheObj = [[AppCache alloc] init];
-//    });
-//    return sharedAppCacheObj;
-//}
-
-//-(AppCache *)init
-//{
-//    self = [super init];
-//    if (self) {
-//    }
-//    return self;
-//}
-
 -(void)setImage:(UIImage *)pic forKey:(NSString *)picStr
 {
     if (pic != nil) {
@@ -57,7 +39,7 @@ static AppCache *sharedAppCacheObj = nil;
     }
 }
 
--(UIImage *)getImageForString:(NSString *)imageStr
+-(UIImage *)getImageForKey:(NSString *)imageStr
 {
    return [self._cache objectForKey:imageStr];
 }

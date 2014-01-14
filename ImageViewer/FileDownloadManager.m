@@ -11,7 +11,8 @@
 
 @implementation FileDownloadManager
 
-+(void)downloadTheFile:(NSString *)URLStr block:(void (^)(BOOL succeeded, NSData *data, NSError *error))completionBlock
++(void)downloadTheFile:(NSString *)URLStr
+                 block:(void (^)(BOOL succeeded, NSData *data, NSError *error))completionBlock
 {
     __block NSData *urlData;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul), ^{
@@ -33,9 +34,10 @@
 }
 
 
-+(void)downloadAndSaveJSON:(NSString *)URLStr block:(void (^)(BOOL succeeded, NSError *error))blockForCompletion
++(void)downloadAndGetJSONForURL:(NSString *)URLStr
+                          block:(void (^)(BOOL succeeded, NSArray* jsonArr, NSError *error))blockForCompletion
 {
-    //applications Documents dirctory path
+    //applications Documents directory path
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     
@@ -44,46 +46,47 @@
     BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
     
     if (!fileExists) {
-        
        [self downloadTheFile:URLStr block:^(BOOL succeeded, NSData *data, NSError *error) {
            if (!error){
                 [data writeToFile:filePath atomically:YES];
-               if (blockForCompletion)
-                   blockForCompletion(TRUE, nil);
+               
+               if (blockForCompletion){
+                   NSError *jsonError;
+                   NSArray* serializedJSONArr = [NSJSONSerialization
+                                                 JSONObjectWithData:data
+                                                 options:kNilOptions
+                                                 error:&jsonError];
+                   blockForCompletion(TRUE, serializedJSONArr, nil);
+               }
                
            }else{
                 NSLog(@"There was an error while downloading the JSON file from web - %@", error);
                if (blockForCompletion)
-                   blockForCompletion(FALSE, error);
-               
+                   blockForCompletion(FALSE, nil, error);
            }
        }];
         
     }else{
+        
+        NSData *data = [NSData dataWithContentsOfFile:filePath];
         if (blockForCompletion) {
-            blockForCompletion(TRUE, nil);
+            NSError *jsonError;
+            NSArray* serializedJSONArr = [NSJSONSerialization
+                                          JSONObjectWithData:data
+                                          options:kNilOptions
+                                          error:&jsonError];
+            blockForCompletion(TRUE, serializedJSONArr, nil);
+
         }
     }
-        
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul), ^{
-//            //live json data url
-////            NSString *stringURL = @"http://dl.dropboxusercontent.com/u/89445730/images.json";
-//            NSString *stringURL = URLStr;
-//            NSURL *url = [NSURL URLWithString:stringURL];
-//            NSData *urlData = [NSData dataWithContentsOfURL:url];
-//            
-//            //attempt to download live data
-//            if (urlData){
-//                [urlData writeToFile:filePath atomically:YES];
-//            }
-//        });
-        
-    
 }
 
-+(void)dowloadAndGetImageForImageString:(NSString *)imageString andResize:(BOOL)imageNeedResizing block:(void (^)(BOOL succeeded, UIImage *image, NSError *error))blockAfterCompletion
+
++(void)downloadAndGetImageForURL:(NSString *)imageString
+                       andResize:(BOOL)imageNeedResizing
+                          block:(void (^)(BOOL succeeded, UIImage *image, NSError *error))blockAfterCompletion
 {
-    UIImage *picFromCache = [[AppCache sharedAppCache] getImageForString:imageString];
+    UIImage *picFromCache = [[AppCache sharedAppCache] getImageForKey:imageString];
     
     if (picFromCache) {
         if (blockAfterCompletion)
@@ -109,7 +112,6 @@
                             blockAfterCompletion(TRUE, image, nil);
                     }
                 }else{
-                    
                     if (blockAfterCompletion)
                         blockAfterCompletion(FALSE, nil, error);
                 }
