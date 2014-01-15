@@ -150,24 +150,39 @@
     CGFloat differenceWidth = screenSize.width - imageSize.width;
     CGFloat differenceHeight = screenSize.height - imageSize.height;
     
-    if (differenceHeight <0) differenceHeight = 0;
-    
-    if (differenceWidth <0) differenceWidth =0;
+//    if (differenceHeight <0) differenceHeight = 0;
+//    if (differenceWidth <0) differenceWidth =0;
     
 //    scrollView.contentSize=CGSizeMake(546,157);
 //    
 //    cellImageView.frame = CGRectMake(0, 161, 546, 157);
+//    [scrollView setContentOffset:CGPointMake(90, 0) animated:NO];
 //
 //    return;
     
-    scrollView.frame = self.view.frame; // better
+    scrollView.frame = self.view.frame;
     
     scrollView.contentSize = imageSize;
     
-    cellImageView.frame = CGRectMake(differenceWidth/2,differenceHeight/2,imageSize.width,imageSize.height);
+    if (differenceWidth <= 0 && differenceHeight >=0) {
+        cellImageView.frame = CGRectMake(0, differenceHeight/2, imageSize.width, imageSize.height);
+        [scrollView setContentOffset:CGPointMake(-(differenceWidth/2), 0) animated:NO];
+    }
+    else if (differenceHeight <=0 && differenceWidth >=0){
+        cellImageView.frame = CGRectMake(differenceWidth/2, 0, imageSize.width, imageSize.height);
+        [scrollView setContentOffset:CGPointMake(0, -(differenceHeight/2)) animated:NO];
+    }
+    else if (differenceWidth <= 0 && differenceHeight <= 0){
+        cellImageView.frame = CGRectMake(0, 0, imageSize.width, imageSize.height);
+        [scrollView setContentOffset:CGPointMake(-(differenceWidth/2), -(differenceHeight/2)) animated:NO];
+    }
+    else{
+        cellImageView.frame = CGRectMake(differenceWidth/2, differenceHeight/2, imageSize.width, imageSize.height);
+    }
     
     
-    [scrollView setContentOffset:CGPointMake(90, 0) animated:NO];
+//    cellImageView.frame = CGRectMake(differenceWidth/2,differenceHeight/2,imageSize.width,imageSize.height);
+//    [scrollView setContentOffset:CGPointMake(90, 0) animated:NO];
     
     [scrollView setScrollEnabled:YES];
 

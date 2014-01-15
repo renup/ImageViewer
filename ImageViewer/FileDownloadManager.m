@@ -99,7 +99,10 @@
                 if (succeeded) {
                     UIImage *image = [UIImage imageWithData:data];
                     if (imageNeedResizing) {
-                        UIImage *resizedImage = [image resizeImageToWidth:50.f andHeight:50.f];
+//                        UIImage *thumb = [UIImage imageWithData:data];
+//                        UIImage *resizedImage = [image resizeImageToWidth:thumb.size.width andHeight:thumb.size.height];
+                        UIImage *resizedImage = [image resizeImageToWidth:50 andHeight:50];
+
                         [[AppCache sharedAppCache] setImage:resizedImage forKey:imageString];
                         
                         if (blockAfterCompletion)
