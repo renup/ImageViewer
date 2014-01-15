@@ -10,11 +10,9 @@
 #import "FileDownloadManager.h"
 #import "MBProgressHUD.h"
 #import "UIImage+ImageManager.h"
-#import "InternetConnectivityView.h"
 
 @interface DetailViewController (){
     UIImageView * cellImageView;
-    InternetConnectivityView *internetStatusView;
 }
 @end
 
@@ -27,7 +25,6 @@
 -(void)viewWillAppear:(BOOL)animated
 {
 //    self.view.autoresizingMask = FALSE;
-    [SingletonHelper sharedHelper].singletonHelperForViewControllerDelegate = self;
     
     UIImage *originalPic = [[AppCache sharedAppCache] getImageForKey:self.originalImageString];
     
@@ -196,31 +193,19 @@
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     [[self navigationController] setNavigationBarHidden:YES animated:YES];
 
+    UIBarButtonItem *button = [[UIBarButtonItem alloc]
+                               initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                               target:self
+                               action:@selector(refresh:)];
+    self.navigationItem.rightBarButtonItem = button;
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
                                           initWithTarget:self action:@selector(showHideNavbar:)];
     [self.view addGestureRecognizer:tapGesture];
 }
 
-//#pragma mark SingletonHelperDelegate methods for internet connectivity
-//
-//-(void)activityCallBackWhenNoInternetConnectivity
-//{
-//    internetStatusView = [[InternetConnectivityView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-//    
-//    [self.view addSubview:internetStatusView];
-//}
-//
-//-(void)activityCallBackWhenInternetConnectivityIsEstablished
-//{
-//    [UIView animateWithDuration:1.5 animations:^{
-//        internetStatusView.frame = CGRectMake(CGRectGetMaxX(self.view.frame), CGRectGetMaxY(self.view.frame), self.view.frame.size.width, self.view.frame.size.height);
-//    } completion:^(BOOL finished) {
-//        UIView *subview = [self.view viewWithTag:14];
-//        [subview removeFromSuperview];
-//    }];
-//}
-
-
+- (IBAction)refresh:(id)sender {
+    [self.view setNeedsDisplay];
+}
 
 - (void)didReceiveMemoryWarning
 {

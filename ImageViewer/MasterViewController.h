@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
-//#import "SingletonHelper.h"
-
 
 
 @interface MasterViewController : UITableViewController 

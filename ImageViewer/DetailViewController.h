@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
-#import "SingletonHelper.h"
 
-@interface DetailViewController : UIViewController <SingletonHelperDelegate>{
+@interface DetailViewController : UIViewController {
     UIScrollView* scrollView;
 
 }

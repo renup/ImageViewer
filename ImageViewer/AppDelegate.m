@@ -10,9 +10,19 @@
 
 @implementation AppDelegate
 
+@synthesize networkConnectionStatus, networkType;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(reachabilityChanged:) name: kReachabilityChangedNotification object: nil];
+    
+    self.networkConnectionStatus=YES;
+    
+    internetReach = [Reachability reachabilityForInternetConnection];
+	[internetReach startNotifier];
+	[self updateInterfaceWithReachability: internetReach];
+
     return YES;
 }
 							
@@ -20,21 +30,6 @@
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-    
-    // Allocate a reachability object
-    // Initialize Reachability
-    Reachability *reachability = [Reachability reachabilityWithHostname:kJSON_URL];
-    // Start Monitoring
-    [reachability startNotifier];
-    
-//    // Initialize View Controller
-//    self.viewController = [[MTViewController alloc] initWithNibName:@"MTViewController" bundle:nil];
-//    // Initialize Window
-//    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//    // Configure Window
-//    [self.window setRootViewController:self.viewController];
-//    [self.window makeKeyAndVisible];
-//    return YES;
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -57,5 +52,102 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+#pragma mark Reachability methods
+//Called by Reachability whenever status changes.
+- (void) reachabilityChanged: (NSNotification* )note
+{
+    Reachability* curReach = [note object];
+    NSParameterAssert([curReach isKindOfClass: [Reachability class]]);
+    [self updateInterfaceWithReachability: curReach];
+}
+
+- (void) updateInterfaceWithReachability: (Reachability*) curReach
+{
+   	if(curReach == internetReach)
+	{
+		[self configureNetworkStatus:curReach];
+	}
+	else if(curReach == wifiReach)
+	{
+        [self configureNetworkStatus:curReach];
+	}
+	
+}
+
+-(void)configureNetworkStatus:(Reachability*) curReach{
+    NetworkStatus netStatus = [curReach currentReachabilityStatus];
+    
+    switch (netStatus)
+    {
+        case NotReachable:
+        {
+            self.networkType= @"No network.";
+            NSLog(@"No network");
+            self.networkConnectionStatus=NO;
+            
+            [self noNetwork];
+            break;
+        }
+            
+        case ReachableViaWWAN:
+        {
+            if (self.networkConnectionStatus==NO) {
+                
+                [self networkConnect];
+                
+            }
+            self.networkType= @"WWAN";
+            NSLog(@"YES network");
+            self.networkConnectionStatus=YES;
+            break;
+        }
+        case ReachableViaWiFi:
+        {
+            if (self.networkConnectionStatus==NO) {
+                
+                [self networkConnect];
+            }
+            self.networkType= @"WIFI";
+            NSLog(@"YES network");
+            
+            self.networkConnectionStatus=YES;
+            break;
+            
+        }
+    }
+    
+    
+}
+-(void)noNetwork{
+    UIImage *bgImage = [UIImage imageNamed:@"bg1.png"];
+    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:bgImage];
+    bgImageView.frame = CGRectMake(0, 0, bgImage.size.width, bgImage.size.height);
+    bgImageView.contentMode = UIViewContentModeTop;
+    networkView  = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    networkView .backgroundColor = [UIColor whiteColor];
+    [networkView addSubview:bgImageView];
+    
+    UILabel *text=[[UILabel alloc] initWithFrame:CGRectMake(0,50,320,50)];
+    text.textColor=[UIColor blackColor];
+    text.backgroundColor=[UIColor clearColor];
+    text.font=[UIFont boldSystemFontOfSize:20.0f];
+    text.text=@"No Network Connection";
+    text.textAlignment = NSTextAlignmentCenter;
+    
+    UIImage *wifiImage = [UIImage imageNamed:@"wifi.png"];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:wifiImage];
+    imageView.frame=CGRectMake(bgImage.size.width/2-imageView.frame.size.width/2,120,wifiImage.size.width,wifiImage.size.height);
+    imageView.contentMode = UIViewContentModeTop;
+    [networkView addSubview:imageView];
+    [networkView addSubview:text];
+    
+    [self.window.rootViewController.view addSubview: networkView];
+}
+
+-(void)networkConnect{
+    [networkView removeFromSuperview];
+}
+
 
 @end
