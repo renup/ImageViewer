@@ -10,7 +10,10 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SingletonHelper.h"
 
-@interface DetailViewController : UIViewController <SingletonHelperDelegate>
+@interface DetailViewController : UIViewController <SingletonHelperDelegate>{
+    UIScrollView* scrollView;
+
+}
 
 @property (strong, nonatomic) NSString *originalImageString;
 

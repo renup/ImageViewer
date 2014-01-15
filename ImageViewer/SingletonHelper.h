@@ -23,7 +23,6 @@
 @property (nonatomic, weak) id <SingletonHelperDelegate> singletonHelperForViewControllerDelegate;
 @property (nonatomic, assign) BOOL internetConnectivity;
 
-
 @end
 
 

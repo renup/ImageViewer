@@ -20,7 +20,21 @@
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    
     // Allocate a reachability object
+    // Initialize Reachability
+    Reachability *reachability = [Reachability reachabilityWithHostname:kJSON_URL];
+    // Start Monitoring
+    [reachability startNotifier];
+    
+//    // Initialize View Controller
+//    self.viewController = [[MTViewController alloc] initWithNibName:@"MTViewController" bundle:nil];
+//    // Initialize Window
+//    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+//    // Configure Window
+//    [self.window setRootViewController:self.viewController];
+//    [self.window makeKeyAndVisible];
+//    return YES;
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application

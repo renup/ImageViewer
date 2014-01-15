@@ -11,6 +11,7 @@
 #import "ImageContent.h"
 #import "DetailViewController.h"
 #import "InternetConnectivityView.h"
+#import "Reachability.h"
 
 @interface MasterViewController () {
     NSMutableArray * _imageContentObjectsArr;
@@ -21,16 +22,39 @@
 
 @implementation MasterViewController
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
+//- (void)awakeFromNib
+//{
+//    [super awakeFromNib];
+//}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Add Observer
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityDidChange:) name:kReachabilityChangedNotification object:nil];
+    }
+    return self;
+}
+
+- (void)reachabilityDidChange:(NSNotification *)notification {
+    Reachability *reachability = (Reachability *)[notification object];
+    if ([reachability isReachable]) {
+        NSLog(@"Reachable");
+    } else {
+        NSLog(@"Unreachable");
+    }
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    [SingletonHelper sharedHelper].singletonHelperForViewControllerDelegate = self;
+     [[NSNotificationCenter defaultCenter] addObserver:self
+                                              selector:@selector(reachabilityDidChange:)
+                                                  name:kReachabilityChangedNotification
+                                                object:nil];
+    
+//    [SingletonHelper sharedHelper].singletonHelperForViewControllerDelegate = self;
     
     [FileDownloadManager downloadAndGetJSONForURL:kJSON_URL block:^(BOOL succeeded, NSArray* jsonArr, NSError *error) {
         if (!error) {
@@ -51,29 +75,29 @@
     }];
 }
 
-#pragma mark SingletonHelperDelegate methods for internet connectivity
-
--(void)activityCallBackWhenNoInternetConnectivity
-{
-    if (![SingletonHelper sharedHelper].internetConnectivity) {
-        internetStatusView = [[InternetConnectivityView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-        
-        [self.view addSubview:internetStatusView];
-    }
-}
-
--(void)activityCallBackWhenInternetConnectivityIsEstablished
-{
-    if ([SingletonHelper sharedHelper].internetConnectivity) {
-        [UIView animateWithDuration:1.5 animations:^{
-            internetStatusView.frame = CGRectMake(CGRectGetMaxX(self.view.frame), CGRectGetMaxY(self.view.frame), self.view.frame.size.width, self.view.frame.size.height);
-        } completion:^(BOOL finished) {
-            UIView *subview = [self.view viewWithTag:14];
-            [subview removeFromSuperview];
-        }];
-
-    }
-}
+//#pragma mark SingletonHelperDelegate methods for internet connectivity
+//
+//-(void)activityCallBackWhenNoInternetConnectivity
+//{
+//    if (![SingletonHelper sharedHelper].internetConnectivity) {
+//        internetStatusView = [[InternetConnectivityView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+//        
+//        [self.view addSubview:internetStatusView];
+//    }
+//}
+//
+//-(void)activityCallBackWhenInternetConnectivityIsEstablished
+//{
+//    if ([SingletonHelper sharedHelper].internetConnectivity) {
+//        [UIView animateWithDuration:1.5 animations:^{
+//            internetStatusView.frame = CGRectMake(CGRectGetMaxX(self.view.frame), CGRectGetMaxY(self.view.frame), self.view.frame.size.width, self.view.frame.size.height);
+//        } completion:^(BOOL finished) {
+//            UIView *subview = [self.view viewWithTag:14];
+//            [subview removeFromSuperview];
+//        }];
+//
+//    }
+//}
 
 - (void)didReceiveMemoryWarning
 {

@@ -47,7 +47,7 @@
     
     if (!fileExists) {
        [self downloadTheFile:URLStr block:^(BOOL succeeded, NSData *data, NSError *error) {
-           if (!error){
+           if (succeeded){
                 [data writeToFile:filePath atomically:YES];
                
                if (blockForCompletion){

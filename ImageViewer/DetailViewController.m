@@ -14,7 +14,6 @@
 
 @interface DetailViewController (){
     UIImageView * cellImageView;
-    UIScrollView* scrollView;
     InternetConnectivityView *internetStatusView;
 }
 @end
@@ -32,8 +31,8 @@
     
     UIImage *originalPic = [[AppCache sharedAppCache] getImageForKey:self.originalImageString];
     
-    scrollView=[[UIScrollView alloc] initWithFrame:self.view.frame];
-//    scrollView.autoresizingMask = FALSE;
+    scrollView = [[UIScrollView alloc] init ];//WithFrame:self.view.frame];
+
     scrollView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
 
     cellImageView = [[UIImageView alloc] init];
@@ -68,7 +67,53 @@
     [self.view addSubview:scrollView];
     
 }
--(void)centerImage{
+
+-(void)centerImage
+{
+    CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+    CGSize imageSize = cellImageView.image.size;
+    CGFloat differenceWidth = screenSize.width - imageSize.width;
+    CGFloat differenceHeight = screenSize.height - imageSize.height;
+    
+    //    if (differenceHeight <0) differenceHeight = 0;
+    
+    //    if (differenceWidth <0) differenceWidth =0;
+//    scrollView.frame = CGRectMake(0, 0, 500, 375); // didnt work
+//    scrollView.frame = CGRectMake(0, 0, 320, 480);
+//    scrollView.frame = CGRectMake(-90, 0, 320, 480); // didnt work
+    scrollView.frame = CGRectMake(-90, 0, 320+90, 480); // better
+//    scrollView.frame = CGRectMake(0, 0, 320, 480); //
+//    scrollView.frame = CGRectMake(0, 0, 320, 480); //
+//    scrollView.frame = CGRectMake(0, 0, 320, 480); // didnt work
+//
+//    scrollView.frame = CGRectMake(0, 0, 500, 375); // didnt work
+//    scrollView.frame = CGRectMake(0, 0, 500, 375); // didnt work
+//    scrollView.frame = CGRectMake(0, 0, 500, 375); // didnt work
+
+
+
+    
+        scrollView.contentSize=CGSizeMake(500, 375);
+
+//        cellImageView.frame = CGRectMake(-90, 52.5, 500, 375);
+    cellImageView.frame = CGRectMake(0, 52.5, 500 +90, 375);
+  
+//    scrollView.contentInset=UIEdgeInsetsMake(64.0,0.0,0.0,0.0);
+//    scrollView.center = cellImageView.center;
+   
+    [scrollView setScrollEnabled:YES];
+
+    
+        return;
+    
+    scrollView.contentSize = imageSize;
+    
+    cellImageView.frame = CGRectMake(differenceWidth/2,differenceHeight/2,imageSize.width,imageSize.height);
+    
+    [scrollView setScrollEnabled:YES];
+}
+
+-(void)centerImage1{
     CGSize screenSize = [[UIScreen mainScreen] bounds].size;
     CGSize imageSize = cellImageView.image.size;
     CGFloat differenceWidth = screenSize.width - imageSize.width;
@@ -78,7 +123,7 @@
     
     if (differenceWidth <0) differenceWidth =0;
     
-//    scrollView.contentSize=CGSizeMake(546,480);
+//    scrollView.contentSize=CGSizeMake(546,157);
 //    
 //    cellImageView.frame = CGRectMake(0, 161, 546, 157);
 //
@@ -104,24 +149,24 @@
     [self.view addGestureRecognizer:tapGesture];
 }
 
-#pragma mark SingletonHelperDelegate methods for internet connectivity
-
--(void)activityCallBackWhenNoInternetConnectivity
-{
-    internetStatusView = [[InternetConnectivityView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    
-    [self.view addSubview:internetStatusView];
-}
-
--(void)activityCallBackWhenInternetConnectivityIsEstablished
-{
-    [UIView animateWithDuration:1.5 animations:^{
-        internetStatusView.frame = CGRectMake(CGRectGetMaxX(self.view.frame), CGRectGetMaxY(self.view.frame), self.view.frame.size.width, self.view.frame.size.height);
-    } completion:^(BOOL finished) {
-        UIView *subview = [self.view viewWithTag:14];
-        [subview removeFromSuperview];
-    }];
-}
+//#pragma mark SingletonHelperDelegate methods for internet connectivity
+//
+//-(void)activityCallBackWhenNoInternetConnectivity
+//{
+//    internetStatusView = [[InternetConnectivityView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+//    
+//    [self.view addSubview:internetStatusView];
+//}
+//
+//-(void)activityCallBackWhenInternetConnectivityIsEstablished
+//{
+//    [UIView animateWithDuration:1.5 animations:^{
+//        internetStatusView.frame = CGRectMake(CGRectGetMaxX(self.view.frame), CGRectGetMaxY(self.view.frame), self.view.frame.size.width, self.view.frame.size.height);
+//    } completion:^(BOOL finished) {
+//        UIView *subview = [self.view viewWithTag:14];
+//        [subview removeFromSuperview];
+//    }];
+//}
 
 
 
