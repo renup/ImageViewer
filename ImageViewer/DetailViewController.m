@@ -68,35 +68,66 @@
     
 }
 
--(void)centerImage
+-(void)centerImage2
 {
     CGSize screenSize = [[UIScreen mainScreen] bounds].size;
     CGSize imageSize = cellImageView.image.size;
     CGFloat differenceWidth = screenSize.width - imageSize.width;
     CGFloat differenceHeight = screenSize.height - imageSize.height;
     
-    //    if (differenceHeight <0) differenceHeight = 0;
+//    if (differenceHeight >0) differenceHeight = 0;
     
-    //    if (differenceWidth <0) differenceWidth =0;
-//    scrollView.frame = CGRectMake(0, 0, 500, 375); // didnt work
-//    scrollView.frame = CGRectMake(0, 0, 320, 480);
-//    scrollView.frame = CGRectMake(-90, 0, 320, 480); // didnt work
-    scrollView.frame = CGRectMake(-90, 0, 320+90, 480); // better
-//    scrollView.frame = CGRectMake(0, 0, 320, 480); //
-//    scrollView.frame = CGRectMake(0, 0, 320, 480); //
-//    scrollView.frame = CGRectMake(0, 0, 320, 480); // didnt work
+//    if (differenceWidth >0) differenceWidth = 0;
+
+    
+    scrollView.frame = CGRectMake(-90, 0, 320, 480); // better
+    
+    scrollView.contentSize=CGSizeMake(500, 375);
+    
+    cellImageView.frame = CGRectMake(0, 52.5, 500, 375);
+
+    
+//    scrollView.frame = CGRectMake(-90, 0, 320+90, 480); // better
 //
-//    scrollView.frame = CGRectMake(0, 0, 500, 375); // didnt work
-//    scrollView.frame = CGRectMake(0, 0, 500, 375); // didnt work
-//    scrollView.frame = CGRectMake(0, 0, 500, 375); // didnt work
-
-
-
+//    scrollView.contentSize=CGSizeMake(500, 375);
+//
+//
+//    cellImageView.frame = CGRectMake(0, 52.5, 500 +90, 375);
     
-        scrollView.contentSize=CGSizeMake(500, 375);
+    return;
+    
+    
+    if(differenceWidth< 0 && differenceHeight <0){
+        scrollView.frame = CGRectMake(differenceWidth/2, differenceHeight/2, screenSize.width - (differenceWidth/2), screenSize.height - (differenceHeight/2));
+        scrollView.contentSize=CGSizeMake(imageSize.width, imageSize.height);
 
-//        cellImageView.frame = CGRectMake(-90, 52.5, 500, 375);
-    cellImageView.frame = CGRectMake(0, 52.5, 500 +90, 375);
+    cellImageView.frame = CGRectMake(differenceWidth/2, differenceHeight/2, imageSize.width -(differenceWidth/2), imageSize.height -(differenceHeight/2));
+        
+    }
+    else if(differenceHeight < 0 && differenceWidth < 0){
+        scrollView.frame = CGRectMake(0, differenceHeight/2, screenSize.width, screenSize.height - (differenceHeight/2));
+        scrollView.contentSize=CGSizeMake(imageSize.width, imageSize.height);
+
+        cellImageView.frame = CGRectMake(differenceWidth/2, 0, imageSize.width, imageSize.height - (differenceHeight/2));
+    }
+    else if (differenceWidth < 0 && differenceHeight > 0){
+        //    scrollView.frame = CGRectMake(-90, 0, 320+90, 480); // better
+        scrollView.frame = CGRectMake(differenceWidth/2, 0, screenSize.width - (differenceWidth/2), screenSize.height);
+        
+        
+        scrollView.contentSize=imageSize;// CGSizeMake(imageSize.width, imageSize.height);
+        
+        //    cellImageView.frame = CGRectMake(0, 52.5, 500 +90, 375);
+        cellImageView.frame = CGRectMake(0, differenceHeight/2, imageSize.width - differenceWidth/2, imageSize.height);
+    }
+    else{
+        scrollView.frame = CGRectMake(differenceWidth/2, differenceHeight/2, screenSize.width, screenSize.height);
+        scrollView.contentSize=CGSizeMake(imageSize.width, imageSize.height);
+
+        cellImageView.frame = CGRectMake(differenceWidth/2, differenceHeight/2, imageSize.width, imageSize.height);
+    }
+    
+    
   
 //    scrollView.contentInset=UIEdgeInsetsMake(64.0,0.0,0.0,0.0);
 //    scrollView.center = cellImageView.center;
@@ -113,7 +144,7 @@
     [scrollView setScrollEnabled:YES];
 }
 
--(void)centerImage1{
+-(void)centerImage{
     CGSize screenSize = [[UIScreen mainScreen] bounds].size;
     CGSize imageSize = cellImageView.image.size;
     CGFloat differenceWidth = screenSize.width - imageSize.width;
@@ -129,11 +160,17 @@
 //
 //    return;
     
+    scrollView.frame = self.view.frame; // better
+    
     scrollView.contentSize = imageSize;
     
     cellImageView.frame = CGRectMake(differenceWidth/2,differenceHeight/2,imageSize.width,imageSize.height);
     
+    
+    [scrollView setContentOffset:CGPointMake(90, 0) animated:NO];
+    
     [scrollView setScrollEnabled:YES];
+
 }
 
 

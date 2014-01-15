@@ -516,12 +516,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ImageViewer/DetailViewController.m"
-            timestampString = "411454785.937374"
+            timestampString = "411460452.59833"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
-            landmarkName = "-centerImage1"
+            startingLineNumber = "149"
+            endingLineNumber = "149"
+            landmarkName = "-centerImage"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -564,12 +564,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ImageViewer/DetailViewController.m"
-            timestampString = "411454785.937374"
+            timestampString = "411460524.380746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "132"
-            endingLineNumber = "132"
-            landmarkName = "-centerImage1"
+            startingLineNumber = "165"
+            endingLineNumber = "165"
+            landmarkName = "-centerImage"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
