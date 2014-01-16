@@ -5,7 +5,6 @@
 //  Created by Renu P on 1/9/14.
 //  Copyright (c) 2014 Renu Punjabi. All rights reserved.
 //
-#import <QuartzCore/QuartzCore.h>
 #import "MasterViewController.h"
 #import "FileDownloadManager.h"
 #import "ImageContent.h"
@@ -41,7 +40,10 @@
             imageContentObjectsArr = [NSMutableArray array];
             
             for(NSDictionary *imageDict in jsonArr){
+                
                 if (([imageDict objectForKey:kCaptionKey] != [NSNull null]) && ([imageDict objectForKey:kThumbImageKey] != [NSNull null]) && ([imageDict objectForKey:kOriginalImageKey]!= [NSNull null])) {
+                    
+                    //Making Image Content objects
                     ImageContent *imageContentObject = [[ImageContent alloc]
                                                         initImageContentWithCaption:[imageDict objectForKey:kCaptionKey]
                                                         thumbString:[imageDict objectForKey:kThumbImageKey]
@@ -117,8 +119,6 @@
 }
 
 #pragma mark - UITableViewDelegate methods
-
-
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     imageContentobj = [imageContentObjectsArr objectAtIndex:indexPath.row];
     NSAttributedString * attributedString = [[NSAttributedString alloc] initWithString:imageContentobj.caption attributes:

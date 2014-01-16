@@ -83,9 +83,7 @@
         case NotReachable:
         {
             self.networkType= @"No network.";
-#if DEBUG
-            NSLog(@"No network");
-#endif
+
             self.networkConnectionStatus=NO;
             
             [self noInternet];
@@ -100,9 +98,7 @@
                 
             }
             self.networkType= @"WWAN";
-#if DEBUG
-            NSLog(@"YES network");
-#endif
+
             self.networkConnectionStatus=YES;
             break;
         }
@@ -114,9 +110,6 @@
             }
             self.networkType= @"WIFI";
 
-#if DEBUG
-            NSLog(@"YES network");
-#endif
             self.networkConnectionStatus=YES;
             break;
         }
@@ -136,10 +129,10 @@
     
     UILabel *connectivityStatusLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,50,320,50)];
     connectivityStatusLabel.textColor=[UIColor blackColor];
-    connectivityStatusLabel.backgroundColor=[UIColor clearColor];
     connectivityStatusLabel.font=[UIFont boldSystemFontOfSize:20.0f];
     connectivityStatusLabel.text=@"No Network Connection";
     connectivityStatusLabel.textAlignment = NSTextAlignmentCenter;
+    connectivityStatusLabel.backgroundColor=[UIColor clearColor];
     [networkView addSubview:connectivityStatusLabel];
 
     UIImage *wifiImage = [UIImage imageNamed:@"wifi.png"];

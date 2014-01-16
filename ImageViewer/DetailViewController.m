@@ -45,13 +45,11 @@
                 scrollView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
             }
             else{
-#if DEBUG
-                NSLog(@"Error while downloading image - %@", error);
-#endif
+
                 UILabel *errorLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, self.view.frame.size.height/2 - 20, self.view.frame.size.width - 20, 40)];
                 errorLabel.numberOfLines = 0;
                 errorLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                errorLabel.text = @"Sorry bad request or no image found";
+                errorLabel.text = @"Sorry No Image Found";
                 errorLabel.textAlignment = NSTextAlignmentCenter;
                 [self.view addSubview:errorLabel];
             }
@@ -112,16 +110,6 @@
     CGSize imageSize = cellImageView.image.size;
     CGFloat differenceWidth = screenSize.width - imageSize.width;
     CGFloat differenceHeight = screenSize.height - imageSize.height;
-    
-    //    if (differenceHeight <0) differenceHeight = 0;
-    //    if (differenceWidth <0) differenceWidth =0;
-    
-    //    scrollView.contentSize=CGSizeMake(546,157);
-    //
-    //    cellImageView.frame = CGRectMake(0, 161, 546, 157);
-    //    [scrollView setContentOffset:CGPointMake(90, 0) animated:NO];
-    //
-    //    return;
     
     scrollView.frame = self.view.frame;
     
