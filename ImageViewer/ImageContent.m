@@ -28,8 +28,6 @@
         self.caption = captionStr;
         self.thumbImageStr = thumbString;
         self.originalImageStr = originalImageString;
-        
-        // run thread to download the images asynchronously
     }
     return self;
 }

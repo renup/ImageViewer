@@ -20,7 +20,10 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
-@property (nonatomic) bool networkConnectionStatus;
+/** BOOL value indicating the status of presence of network */
+@property (nonatomic) BOOL networkConnectionStatus;
+
+/** NSString indicating the type of network */
 @property (nonatomic) NSString *networkType;
 
 

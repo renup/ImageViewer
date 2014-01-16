@@ -83,7 +83,9 @@
         case NotReachable:
         {
             self.networkType= @"No network.";
+#if DEBUG
             NSLog(@"No network");
+#endif
             self.networkConnectionStatus=NO;
             
             [self noNetwork];
@@ -98,7 +100,9 @@
                 
             }
             self.networkType= @"WWAN";
+#if DEBUG
             NSLog(@"YES network");
+#endif
             self.networkConnectionStatus=YES;
             break;
         }
@@ -109,8 +113,10 @@
                 [self networkConnect];
             }
             self.networkType= @"WIFI";
+
+#if DEBUG
             NSLog(@"YES network");
-            
+#endif
             self.networkConnectionStatus=YES;
             break;
             

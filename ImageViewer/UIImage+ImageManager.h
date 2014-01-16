@@ -10,9 +10,8 @@
 
 @interface UIImage (ImageManager)
 
+/** This method resizes the original image to specific size by passing the values in this method */
 - (UIImage *)resizeImageToWidth:(float)widthVal andHeight:(float)heightVal;
-//-(UIImage *)makeRoundedImage:(UIImage *) image radius: (float) radius;
-+(UIImage*)imageFitInCenterForSize:(CGSize)inSize forSourceImage:(UIImage*)inImage;
 
 
 @end

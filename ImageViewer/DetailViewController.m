@@ -13,6 +13,7 @@
 
 @interface DetailViewController (){
     UIImageView * cellImageView;
+    BOOL statusBarHidden;
 }
 @end
 
@@ -23,9 +24,8 @@
 #pragma mark - Managing the detail item
 
 -(void)viewWillAppear:(BOOL)animated
-{
-//    self.view.autoresizingMask = FALSE;
-    
+{    
+    statusBarHidden = YES;
     UIImage *originalPic = [[AppCache sharedAppCache] getImageForKey:self.originalImageString];
     
     scrollView = [[UIScrollView alloc] init ];//WithFrame:self.view.frame];
@@ -49,11 +49,15 @@
                 scrollView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
             }
             else{
+#if DEBUG
                 NSLog(@"Error while downloading image - %@", error);
-                UILabel *errorLable = [[UILabel alloc] initWithFrame:CGRectMake(10, self.view.frame.size.height/2 - 20, self.view.frame.size.width - 20, 40)];
-                errorLable.text = @"Sorry no Image found";
-                errorLable.textAlignment = NSTextAlignmentCenter;
-                [cellImageView addSubview:errorLable];
+#endif
+                UILabel *errorLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, self.view.frame.size.height/2 - 20, self.view.frame.size.width - 20, 40)];
+                errorLabel.numberOfLines = 0;
+                errorLabel.lineBreakMode = NSLineBreakByWordWrapping;
+                errorLabel.text = @"Sorry bad request or no image found";
+                errorLabel.textAlignment = NSTextAlignmentCenter;
+                [self.view addSubview:errorLabel];
             }
 
             [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -64,6 +68,8 @@
     [self.view addSubview:scrollView];
     
 }
+
+
 
 -(void)centerImage2
 {
@@ -190,7 +196,7 @@
 {
     [super viewDidLoad];
     
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     [[self navigationController] setNavigationBarHidden:YES animated:YES];
 
     UIBarButtonItem *button = [[UIBarButtonItem alloc]
@@ -213,14 +219,29 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(BOOL)prefersStatusBarHidden
+{
+//    if (self.navigationController.navigationBar.hidden == NO){
+//        return YES;
+//    }
+//    else if (self.navigationController.navigationBar.hidden == YES){
+//        return YES;
+//    }
+//    else
+    
+    return statusBarHidden;
+}
+
 -(void) showHideNavbar:(id) sender
 {
+    
+    statusBarHidden = !statusBarHidden;
     // write code to show/hide nav bar here
     // check if the Navigation Bar is shown
     if (self.navigationController.navigationBar.hidden == NO)
     {
         // hide the status bar
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+//        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 
         // hide the Navigation Bar
         [self.navigationController setNavigationBarHidden:YES animated:YES];
@@ -230,7 +251,7 @@
     else if (self.navigationController.navigationBar.hidden == YES)
     {
         // Show the status bar
-        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+//        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
         // Show the Navigation Bar
         [self.navigationController setNavigationBarHidden:NO animated:YES];
     }

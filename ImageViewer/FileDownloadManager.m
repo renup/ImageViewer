@@ -47,6 +47,7 @@
     
     if (!fileExists) {
        [self downloadTheFile:URLStr block:^(BOOL succeeded, NSData *data, NSError *error) {
+           NSLog(@"DOWNLOADING AGAIN");
            if (succeeded){
                 [data writeToFile:filePath atomically:YES];
                
@@ -60,7 +61,9 @@
                }
                
            }else{
+#if DEBUG
                 NSLog(@"There was an error while downloading the JSON file from web - %@", error);
+#endif
                if (blockForCompletion)
                    blockForCompletion(FALSE, nil, error);
            }
@@ -95,7 +98,8 @@
     }else{
         if (imageString != nil) {
             [self downloadTheFile:imageString block:^(BOOL succeeded, NSData *data, NSError *error) {
-                
+                NSLog(@"DOWNLOADING IMAGE AGAIN");
+
                 if (succeeded) {
                     UIImage *image = [UIImage imageWithData:data];
                     if (imageNeedResizing) {

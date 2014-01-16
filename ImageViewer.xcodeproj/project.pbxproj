@@ -26,7 +26,6 @@
 		AF3BFAAB187FB41E0088198B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF3BFA8A187FB41E0088198B /* UIKit.framework */; };
 		AF3BFAB3187FB41E0088198B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AF3BFAB1187FB41E0088198B /* InfoPlist.strings */; };
 		AF3BFAB5187FB41E0088198B /* ImageViewerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3BFAB4187FB41E0088198B /* ImageViewerTests.m */; };
-		AF3BFAC61881BB700088198B /* ImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3BFAC51881BB700088198B /* ImageManager.m */; };
 		AF3BFAC918826B0A0088198B /* FileDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3BFAC818826B0A0088198B /* FileDownloadManager.m */; };
 		AF3BFACD188277250088198B /* ImageContent.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3BFACC188277250088198B /* ImageContent.m */; };
 		AF3BFAD118827E1B0088198B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = AF3BFAD018827E1B0088198B /* Constants.m */; };
@@ -78,8 +77,6 @@
 		AF3BFAB0187FB41E0088198B /* ImageViewerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ImageViewerTests-Info.plist"; sourceTree = "<group>"; };
 		AF3BFAB2187FB41E0088198B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AF3BFAB4187FB41E0088198B /* ImageViewerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageViewerTests.m; sourceTree = "<group>"; };
-		AF3BFAC41881BB700088198B /* ImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManager.h; sourceTree = "<group>"; };
-		AF3BFAC51881BB700088198B /* ImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManager.m; sourceTree = "<group>"; };
 		AF3BFAC718826B0A0088198B /* FileDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileDownloadManager.h; sourceTree = "<group>"; };
 		AF3BFAC818826B0A0088198B /* FileDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileDownloadManager.m; sourceTree = "<group>"; };
 		AF3BFACB188277250088198B /* ImageContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageContent.h; sourceTree = "<group>"; };
@@ -215,8 +212,6 @@
 			children = (
 				AF8C0EF91883166C00BE2F25 /* UIImage+ImageManager.h */,
 				AF8C0EFA1883166C00BE2F25 /* UIImage+ImageManager.m */,
-				AF3BFAC41881BB700088198B /* ImageManager.h */,
-				AF3BFAC51881BB700088198B /* ImageManager.m */,
 				AF3BFAC718826B0A0088198B /* FileDownloadManager.h */,
 				AF3BFAC818826B0A0088198B /* FileDownloadManager.m */,
 			);
@@ -328,6 +323,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Renu Punjabi";
 				TargetAttributes = {
+					AF3BFA82187FB41E0088198B = {
+						DevelopmentTeam = MB589J6Y3F;
+					};
 					AF3BFAA6187FB41E0088198B = {
 						TestTargetID = AF3BFA82187FB41E0088198B;
 					};
@@ -387,7 +385,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF3BFA97187FB41E0088198B /* AppDelegate.m in Sources */,
-				AF3BFAC61881BB700088198B /* ImageManager.m in Sources */,
 				AF8C0EF818830E3A00BE2F25 /* AppCache.m in Sources */,
 				AF3BFA9D187FB41E0088198B /* MasterViewController.m in Sources */,
 				AF8C0EFB1883166C00BE2F25 /* UIImage+ImageManager.m in Sources */,
@@ -524,11 +521,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ImageViewer/ImageViewer-Prefix.pch";
 				INFOPLIST_FILE = "ImageViewer/ImageViewer-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -538,11 +538,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ImageViewer/ImageViewer-Prefix.pch";
 				INFOPLIST_FILE = "ImageViewer/ImageViewer-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

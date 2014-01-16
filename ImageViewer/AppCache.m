@@ -10,7 +10,7 @@
 
 @interface AppCache()
 
-@property (nonatomic, strong)NSCache *_cache;
+@property (nonatomic, strong)NSCache *cache;
 
 @end
 
@@ -18,15 +18,16 @@ static AppCache *sharedAppCacheObj = nil;
 
 @implementation AppCache
 
-@synthesize _cache;
+@synthesize cache;
 
 
 +(AppCache *)sharedAppCache
 {
     if (sharedAppCacheObj == nil)
     {
+        NSLog(@"CREATING AGAIN");
         sharedAppCacheObj = [[AppCache alloc] init];
-        sharedAppCacheObj._cache = [[NSCache alloc] init];
+        sharedAppCacheObj.cache = [[NSCache alloc] init];
     }
     return sharedAppCacheObj;
 }
@@ -35,13 +36,13 @@ static AppCache *sharedAppCacheObj = nil;
 -(void)setImage:(UIImage *)pic forKey:(NSString *)picStr
 {
     if (pic != nil) {
-        [self._cache setObject:pic forKey:picStr];
+        [self.cache setObject:pic forKey:picStr];
     }
 }
 
 -(UIImage *)getImageForKey:(NSString *)imageStr
 {
-   return [self._cache objectForKey:imageStr];
+   return [self.cache objectForKey:imageStr];
 }
 
 @end
