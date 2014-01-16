@@ -21,41 +21,24 @@
     return newImage;
 }
 
-//-(UIImage *)makeRoundedImage:(UIImage *) image radius: (float) radius
-//{
-//    CALayer *imageLayer = [CALayer layer];
-//    imageLayer.frame = CGRectMake(0, 0, image.size.width, image.size.height);
-//    imageLayer.contents = (id) image.CGImage;
-//    
-//    imageLayer.masksToBounds = YES;
-//    imageLayer.cornerRadius = radius;
-//    imageLayer.borderColor = [[UIColor blackColor] CGColor];
-//    
-//    UIGraphicsBeginImageContext(image.size);
-//    [imageLayer renderInContext:UIGraphicsGetCurrentContext()];
-//    UIImage *roundedImage = UIGraphicsGetImageFromCurrentImageContext();
-//    UIGraphicsEndImageContext();
-//    
-//    return roundedImage;
-//}
-
-#pragma mark - Image
-+(UIImage*)imageFitInCenterForSize:(CGSize)inSize forSourceImage:(UIImage*)inImage
+-(UIImage *)cropImage:(UIImage *)inputImage
 {
-    // redraw the image to fit |yourView|'s size
-    CGSize imageOriginalSize = inImage.size;
-    UIImage *resultImage = nil;
-    if (imageOriginalSize.width<=inSize.width && imageOriginalSize.height<=inSize.height)
-    {
-        UIGraphicsBeginImageContextWithOptions(inSize, NO, 0.f);
-        [inImage drawInRect:CGRectMake((inSize.width-imageOriginalSize.width)/2.0, (inSize.height-imageOriginalSize.height)/2.0, imageOriginalSize.width, imageOriginalSize.height)];
-        resultImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
+    CGRect inputImageRect;
+
+    if (inputImage.size.width == inputImage.size.height){
+        return inputImage;
     }
-    return resultImage;
+    else{
+        if (inputImage.size.width < inputImage.size.height)
+            inputImageRect = CGRectMake(0, 0, inputImage.size.width, inputImage.size.width);
+        else
+            inputImageRect = CGRectMake(0, 0, inputImage.size.height, inputImage.size.height);
+    }
+    
+    CGImageRef imageRef = CGImageCreateWithImageInRect(self.CGImage, inputImageRect);
+    
+    UIImage *image = [UIImage imageWithCGImage:imageRef];
+    return image;
 }
-
-
-
 
 @end

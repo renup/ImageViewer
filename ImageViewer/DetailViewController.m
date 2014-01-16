@@ -25,10 +25,9 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {    
-    statusBarHidden = YES;
     UIImage *originalPic = [[AppCache sharedAppCache] getImageForKey:self.originalImageString];
     
-    scrollView = [[UIScrollView alloc] init ];//WithFrame:self.view.frame];
+    scrollView = [[UIScrollView alloc] init];
 
     scrollView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
 
@@ -70,81 +69,47 @@
 }
 
 
-
--(void)centerImage2
+- (void)viewDidLoad
 {
-    CGSize screenSize = [[UIScreen mainScreen] bounds].size;
-    CGSize imageSize = cellImageView.image.size;
-    CGFloat differenceWidth = screenSize.width - imageSize.width;
-    CGFloat differenceHeight = screenSize.height - imageSize.height;
+    [super viewDidLoad];
     
-//    if (differenceHeight >0) differenceHeight = 0;
-    
-//    if (differenceWidth >0) differenceWidth = 0;
+    statusBarHidden = YES;
+    [[self navigationController] setNavigationBarHidden:YES animated:YES];
 
-    
-    scrollView.frame = CGRectMake(-90, 0, 320, 480); // better
-    
-    scrollView.contentSize=CGSizeMake(500, 375);
-    
-    cellImageView.frame = CGRectMake(0, 52.5, 500, 375);
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(showHideNavbar:)];
+    [self.view addGestureRecognizer:tapGesture];
+}
 
-    
-//    scrollView.frame = CGRectMake(-90, 0, 320+90, 480); // better
-//
-//    scrollView.contentSize=CGSizeMake(500, 375);
-//
-//
-//    cellImageView.frame = CGRectMake(0, 52.5, 500 +90, 375);
-    
-    return;
-    
-    
-    if(differenceWidth< 0 && differenceHeight <0){
-        scrollView.frame = CGRectMake(differenceWidth/2, differenceHeight/2, screenSize.width - (differenceWidth/2), screenSize.height - (differenceHeight/2));
-        scrollView.contentSize=CGSizeMake(imageSize.width, imageSize.height);
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 
-    cellImageView.frame = CGRectMake(differenceWidth/2, differenceHeight/2, imageSize.width -(differenceWidth/2), imageSize.height -(differenceHeight/2));
-        
+-(BOOL)prefersStatusBarHidden
+{
+    return statusBarHidden;
+}
+
+-(void) showHideNavbar:(id) sender
+{
+    
+    statusBarHidden = !statusBarHidden;
+    // write code to show/hide nav bar here
+    // check if the Navigation Bar is shown
+    if (self.navigationController.navigationBar.hidden == NO)
+    {
+        // hide the Navigation Bar
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+
     }
-    else if(differenceHeight < 0 && differenceWidth < 0){
-        scrollView.frame = CGRectMake(0, differenceHeight/2, screenSize.width, screenSize.height - (differenceHeight/2));
-        scrollView.contentSize=CGSizeMake(imageSize.width, imageSize.height);
-
-        cellImageView.frame = CGRectMake(differenceWidth/2, 0, imageSize.width, imageSize.height - (differenceHeight/2));
+    // if Navigation Bar is already hidden
+    else if (self.navigationController.navigationBar.hidden == YES)
+    {
+        // Show the Navigation Bar
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
     }
-    else if (differenceWidth < 0 && differenceHeight > 0){
-        //    scrollView.frame = CGRectMake(-90, 0, 320+90, 480); // better
-        scrollView.frame = CGRectMake(differenceWidth/2, 0, screenSize.width - (differenceWidth/2), screenSize.height);
-        
-        
-        scrollView.contentSize=imageSize;// CGSizeMake(imageSize.width, imageSize.height);
-        
-        //    cellImageView.frame = CGRectMake(0, 52.5, 500 +90, 375);
-        cellImageView.frame = CGRectMake(0, differenceHeight/2, imageSize.width - differenceWidth/2, imageSize.height);
-    }
-    else{
-        scrollView.frame = CGRectMake(differenceWidth/2, differenceHeight/2, screenSize.width, screenSize.height);
-        scrollView.contentSize=CGSizeMake(imageSize.width, imageSize.height);
-
-        cellImageView.frame = CGRectMake(differenceWidth/2, differenceHeight/2, imageSize.width, imageSize.height);
-    }
-    
-    
-  
-//    scrollView.contentInset=UIEdgeInsetsMake(64.0,0.0,0.0,0.0);
-//    scrollView.center = cellImageView.center;
-   
-    [scrollView setScrollEnabled:YES];
-
-    
-        return;
-    
-    scrollView.contentSize = imageSize;
-    
-    cellImageView.frame = CGRectMake(differenceWidth/2,differenceHeight/2,imageSize.width,imageSize.height);
-    
-    [scrollView setScrollEnabled:YES];
 }
 
 -(void)centerImage{
@@ -153,15 +118,15 @@
     CGFloat differenceWidth = screenSize.width - imageSize.width;
     CGFloat differenceHeight = screenSize.height - imageSize.height;
     
-//    if (differenceHeight <0) differenceHeight = 0;
-//    if (differenceWidth <0) differenceWidth =0;
+    //    if (differenceHeight <0) differenceHeight = 0;
+    //    if (differenceWidth <0) differenceWidth =0;
     
-//    scrollView.contentSize=CGSizeMake(546,157);
-//    
-//    cellImageView.frame = CGRectMake(0, 161, 546, 157);
-//    [scrollView setContentOffset:CGPointMake(90, 0) animated:NO];
-//
-//    return;
+    //    scrollView.contentSize=CGSizeMake(546,157);
+    //
+    //    cellImageView.frame = CGRectMake(0, 161, 546, 157);
+    //    [scrollView setContentOffset:CGPointMake(90, 0) animated:NO];
+    //
+    //    return;
     
     scrollView.frame = self.view.frame;
     
@@ -183,78 +148,10 @@
         cellImageView.frame = CGRectMake(differenceWidth/2, differenceHeight/2, imageSize.width, imageSize.height);
     }
     
-    
-//    cellImageView.frame = CGRectMake(differenceWidth/2,differenceHeight/2,imageSize.width,imageSize.height);
-//    [scrollView setContentOffset:CGPointMake(90, 0) animated:NO];
+    //    cellImageView.frame = CGRectMake(differenceWidth/2,differenceHeight/2,imageSize.width,imageSize.height);
+    //    [scrollView setContentOffset:CGPointMake(90, 0) animated:NO];
     
     [scrollView setScrollEnabled:YES];
-
-}
-
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
-    [[self navigationController] setNavigationBarHidden:YES animated:YES];
-
-    UIBarButtonItem *button = [[UIBarButtonItem alloc]
-                               initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                               target:self
-                               action:@selector(refresh:)];
-    self.navigationItem.rightBarButtonItem = button;
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
-                                          initWithTarget:self action:@selector(showHideNavbar:)];
-    [self.view addGestureRecognizer:tapGesture];
-}
-
-- (IBAction)refresh:(id)sender {
-    [self.view setNeedsDisplay];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
--(BOOL)prefersStatusBarHidden
-{
-//    if (self.navigationController.navigationBar.hidden == NO){
-//        return YES;
-//    }
-//    else if (self.navigationController.navigationBar.hidden == YES){
-//        return YES;
-//    }
-//    else
-    
-    return statusBarHidden;
-}
-
--(void) showHideNavbar:(id) sender
-{
-    
-    statusBarHidden = !statusBarHidden;
-    // write code to show/hide nav bar here
-    // check if the Navigation Bar is shown
-    if (self.navigationController.navigationBar.hidden == NO)
-    {
-        // hide the status bar
-//        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-
-        // hide the Navigation Bar
-        [self.navigationController setNavigationBarHidden:YES animated:YES];
-
-    }
-    // if Navigation Bar is already hidden
-    else if (self.navigationController.navigationBar.hidden == YES)
-    {
-        // Show the status bar
-//        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-        // Show the Navigation Bar
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
-    }
 }
 
 @end

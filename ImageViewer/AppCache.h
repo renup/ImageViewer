@@ -11,7 +11,7 @@
 @interface AppCache : NSObject
 
 /** Creating a singleton AppCache object */
-+(AppCache *)sharedAppCache;
++(id)sharedAppCache;
 
 /** Creating Setters and Getters for images stored in the cache */
 -(void)setImage:(UIImage *)pic forKey:(NSString *)picStr;

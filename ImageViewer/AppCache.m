@@ -14,22 +14,24 @@
 
 @end
 
-static AppCache *sharedAppCacheObj = nil;
+//static AppCache *sharedAppCacheObj = nil;
 
 @implementation AppCache
 
 @synthesize cache;
 
-
-+(AppCache *)sharedAppCache
++ (id)sharedAppCache
 {
-    if (sharedAppCacheObj == nil)
-    {
-        NSLog(@"CREATING AGAIN");
-        sharedAppCacheObj = [[AppCache alloc] init];
-        sharedAppCacheObj.cache = [[NSCache alloc] init];
-    }
-    return sharedAppCacheObj;
+    static AppCache *sharedMyManager = nil;
+    
+    static dispatch_once_t onceToken;
+ 
+    dispatch_once(&onceToken, ^{
+        sharedMyManager = [[self alloc] init];
+        sharedMyManager.cache = [[NSCache alloc] init];
+    });
+    
+    return sharedMyManager;
 }
 
 

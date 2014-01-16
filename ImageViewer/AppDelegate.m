@@ -122,9 +122,9 @@
             
         }
     }
-    
-    
 }
+
+
 -(void)noNetwork{
     UIImage *bgImage = [UIImage imageNamed:@"bg1.png"];
     UIImageView *bgImageView = [[UIImageView alloc] initWithImage:bgImage];
@@ -134,19 +134,19 @@
     networkView .backgroundColor = [UIColor whiteColor];
     [networkView addSubview:bgImageView];
     
-    UILabel *text=[[UILabel alloc] initWithFrame:CGRectMake(0,50,320,50)];
-    text.textColor=[UIColor blackColor];
-    text.backgroundColor=[UIColor clearColor];
-    text.font=[UIFont boldSystemFontOfSize:20.0f];
-    text.text=@"No Network Connection";
-    text.textAlignment = NSTextAlignmentCenter;
+    UILabel *connectivityStatusLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,50,320,50)];
+    connectivityStatusLabel.textColor=[UIColor blackColor];
+    connectivityStatusLabel.backgroundColor=[UIColor clearColor];
+    connectivityStatusLabel.font=[UIFont boldSystemFontOfSize:20.0f];
+    connectivityStatusLabel.text=@"No Network Connection";
+    connectivityStatusLabel.textAlignment = NSTextAlignmentCenter;
     
     UIImage *wifiImage = [UIImage imageNamed:@"wifi.png"];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:wifiImage];
     imageView.frame=CGRectMake(bgImage.size.width/2-imageView.frame.size.width/2,120,wifiImage.size.width,wifiImage.size.height);
     imageView.contentMode = UIViewContentModeTop;
     [networkView addSubview:imageView];
-    [networkView addSubview:text];
+    [networkView addSubview:connectivityStatusLabel];
     
     [self.window.rootViewController.view addSubview: networkView];
 }
@@ -154,6 +154,5 @@
 -(void)networkConnect{
     [networkView removeFromSuperview];
 }
-
 
 @end
