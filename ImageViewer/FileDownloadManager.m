@@ -104,15 +104,12 @@
                     UIImage *image = [UIImage imageWithData:data];
                     if (imageNeedResizing) {
                         UIImage *thumb = [UIImage imageWithData:data];
-//                        UIImage *resizedImage = [image resizeImageToWidth:thumb.size.width andHeight:thumb.size.height];
-//                        UIImage *resizedImage = [image resizeImageToWidth:50 andHeight:50];
-                        UIImage *resizedImage = [image cropImage:thumb];
-                        resizedImage = [resizedImage resizeImageToWidth:50 andHeight:50];
-
-                        [[AppCache sharedAppCache] setImage:resizedImage forKey:imageString];
+                        thumb = [thumb cropImage];
+                        thumb = [thumb resizeImageToWidth:50 andHeight:50];
+                        [[AppCache sharedAppCache] setImage:thumb forKey:imageString];
                         
                         if (blockAfterCompletion)
-                            blockAfterCompletion(TRUE, resizedImage, nil);
+                            blockAfterCompletion(TRUE, thumb, nil);
                         
                     }else{
                         [[AppCache sharedAppCache] setImage:image forKey:imageString];

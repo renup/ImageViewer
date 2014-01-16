@@ -13,7 +13,7 @@
 
 
 @interface MasterViewController () {
-    NSMutableArray * _imageContentObjectsArr;
+    NSMutableArray * imageContentObjectsArr;
     ImageContent *imageContentobj;
 }
 @end
@@ -37,9 +37,9 @@
     self.navigationItem.rightBarButtonItem = button;
          
     [FileDownloadManager downloadAndGetJSONForURL:kJSON_URL block:^(BOOL succeeded, NSArray* jsonArr, NSError *error) {
-        if (!error) {
+        if (succeeded) {
+            imageContentObjectsArr = [NSMutableArray array];
             
-            _imageContentObjectsArr = [NSMutableArray array];
             for(NSDictionary *imageDict in jsonArr){
                 if (([imageDict objectForKey:kCaptionKey] != [NSNull null]) && ([imageDict objectForKey:kThumbImageKey] != [NSNull null]) && ([imageDict objectForKey:kOriginalImageKey]!= [NSNull null])) {
                     ImageContent *imageContentObject = [[ImageContent alloc]
@@ -47,7 +47,7 @@
                                                         thumbString:[imageDict objectForKey:kThumbImageKey]
                                                         andOriginalImageString:[imageDict objectForKey:kOriginalImageKey]];
                     
-                    [_imageContentObjectsArr addObject:imageContentObject];
+                    [imageContentObjectsArr addObject:imageContentObject];
                 }
             }
             [self.tableView reloadData];
@@ -74,7 +74,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _imageContentObjectsArr.count;
+    return imageContentObjectsArr.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -94,22 +94,21 @@
     cell.imageView.layer.masksToBounds = YES;
     cell.imageView.layer.borderColor=[[UIColor blackColor] CGColor];
     
-    imageContentobj = _imageContentObjectsArr[indexPath.row];
-
+    imageContentobj = imageContentObjectsArr[indexPath.row];
+    
     UIImage *thumbPic = [[AppCache sharedAppCache] getImageForKey:imageContentobj.thumbImageStr];
     if (thumbPic) {
         cell.imageView.image = thumbPic;
-        
     }else{
         cell.imageView.image = [UIImage imageNamed:@"Placeholder.png"];
         
         [FileDownloadManager downloadAndGetImageForURL:imageContentobj.thumbImageStr
                                              andResize:YES
                                                  block:^(BOOL succeeded, UIImage *image, NSError *error) {
-            if (succeeded)
-                cell.imageView.image = image;
-            else
-                cell.imageView.image = [UIImage imageNamed:@"Placeholder.png"];
+                                                     if (succeeded)
+                                                         cell.imageView.image = image;
+                                                     else
+                                                         cell.imageView.image = [UIImage imageNamed:@"Placeholder.png"];
         }];
     }
     
@@ -119,10 +118,9 @@
 
 #pragma mark - UITableViewDelegate methods
 
-//source: http://stackoverflow.com/questions/8831664/how-to-calculate-heightforrowatindexpath-for-cells-which-setup-via-switch-in-cel/8832778#8832778
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    imageContentobj = [_imageContentObjectsArr objectAtIndex:indexPath.row];
+    imageContentobj = [imageContentObjectsArr objectAtIndex:indexPath.row];
     NSAttributedString * attributedString = [[NSAttributedString alloc] initWithString:imageContentobj.caption attributes:
                                              @{ NSFontAttributeName: [UIFont systemFontOfSize:18]}];
     
@@ -139,45 +137,12 @@
     return (rect.size.height < 44 ? 44 : rect.size.height);
 }
 
-
-//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    // Return NO if you do not want the specified item to be editable.
-//    return YES;
-//}
-
-//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    if (editingStyle == UITableViewCellEditingStyleDelete) {
-//        [_imageContentObjectsArr removeObjectAtIndex:indexPath.row];
-//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-//    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-//        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-//    }
-//}
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         
-        imageContentobj = _imageContentObjectsArr[indexPath.row];
+        imageContentobj = imageContentObjectsArr[indexPath.row];
         [[segue destinationViewController] setOriginalImageString:imageContentobj.originalImageStr];
     }
 }

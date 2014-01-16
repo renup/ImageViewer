@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Renu Punjabi. All rights reserved.
 //
 
+//This class creates image objects
 #import <Foundation/Foundation.h>
 
 @interface ImageContent : NSObject

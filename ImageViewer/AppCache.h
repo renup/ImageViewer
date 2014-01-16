@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Renu Punjabi. All rights reserved.
 //
 
+//This class caches all the images so that we don't have to fresh download each time user scrolls repeatedly table view in MasterViewController or the full image in DetailViewController
 #import <Foundation/Foundation.h>
 
 @interface AppCache : NSObject

@@ -57,28 +57,28 @@
 //Called by Reachability whenever status changes.
 - (void) reachabilityChanged: (NSNotification* )note
 {
-    Reachability* curReach = [note object];
-    NSParameterAssert([curReach isKindOfClass: [Reachability class]]);
-    [self updateInterfaceWithReachability: curReach];
+    Reachability* currentReachability = [note object];
+    NSParameterAssert([currentReachability isKindOfClass: [Reachability class]]);
+    [self updateInterfaceWithReachability: currentReachability];
 }
 
-- (void) updateInterfaceWithReachability: (Reachability*) curReach
+- (void) updateInterfaceWithReachability: (Reachability*) currentReach
 {
-   	if(curReach == internetReach)
+   	if(currentReach == internetReach)
 	{
-		[self configureNetworkStatus:curReach];
+		[self configureNetworkStatus:currentReach];
 	}
-	else if(curReach == wifiReach)
+	else if(currentReach == wifiReach)
 	{
-        [self configureNetworkStatus:curReach];
+        [self configureNetworkStatus:currentReach];
 	}
 	
 }
 
 -(void)configureNetworkStatus:(Reachability*) curReach{
-    NetworkStatus netStatus = [curReach currentReachabilityStatus];
+    NetworkStatus internetStatus = [curReach currentReachabilityStatus];
     
-    switch (netStatus)
+    switch (internetStatus)
     {
         case NotReachable:
         {
@@ -88,7 +88,7 @@
 #endif
             self.networkConnectionStatus=NO;
             
-            [self noNetwork];
+            [self noInternet];
             break;
         }
             
@@ -119,20 +119,20 @@
 #endif
             self.networkConnectionStatus=YES;
             break;
-            
         }
     }
 }
 
 
--(void)noNetwork{
-    UIImage *bgImage = [UIImage imageNamed:@"bg1.png"];
-    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:bgImage];
-    bgImageView.frame = CGRectMake(0, 0, bgImage.size.width, bgImage.size.height);
-    bgImageView.contentMode = UIViewContentModeTop;
+-(void)noInternet
+{
+    UIImage *backgroundImage = [UIImage imageNamed:@"bg1.png"];
+    UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:backgroundImage];
+    backgroundImageView.frame = CGRectMake(0, 0, backgroundImage.size.width, backgroundImage.size.height);
+    backgroundImageView.contentMode = UIViewContentModeTop;
     networkView  = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    networkView .backgroundColor = [UIColor whiteColor];
-    [networkView addSubview:bgImageView];
+    networkView.backgroundColor = [UIColor whiteColor];
+    [networkView addSubview:backgroundImageView];
     
     UILabel *connectivityStatusLabel=[[UILabel alloc] initWithFrame:CGRectMake(0,50,320,50)];
     connectivityStatusLabel.textColor=[UIColor blackColor];
@@ -140,13 +140,13 @@
     connectivityStatusLabel.font=[UIFont boldSystemFontOfSize:20.0f];
     connectivityStatusLabel.text=@"No Network Connection";
     connectivityStatusLabel.textAlignment = NSTextAlignmentCenter;
-    
-    UIImage *wifiImage = [UIImage imageNamed:@"wifi.png"];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:wifiImage];
-    imageView.frame=CGRectMake(bgImage.size.width/2-imageView.frame.size.width/2,120,wifiImage.size.width,wifiImage.size.height);
-    imageView.contentMode = UIViewContentModeTop;
-    [networkView addSubview:imageView];
     [networkView addSubview:connectivityStatusLabel];
+
+    UIImage *wifiImage = [UIImage imageNamed:@"wifi.png"];
+    UIImageView *wifiImageView = [[UIImageView alloc] initWithImage:wifiImage];
+    wifiImageView.frame=CGRectMake(backgroundImage.size.width/2-wifiImageView.frame.size.width/2,120,wifiImage.size.width,wifiImage.size.height);
+    wifiImageView.contentMode = UIViewContentModeCenter;
+    [networkView addSubview:wifiImageView];
     
     [self.window.rootViewController.view addSubview: networkView];
 }

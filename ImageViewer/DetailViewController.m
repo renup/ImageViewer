@@ -9,7 +9,6 @@
 #import "DetailViewController.h"
 #import "FileDownloadManager.h"
 #import "MBProgressHUD.h"
-#import "UIImage+ImageManager.h"
 
 @interface DetailViewController (){
     UIImageView * cellImageView;
@@ -28,13 +27,11 @@
     UIImage *originalPic = [[AppCache sharedAppCache] getImageForKey:self.originalImageString];
     
     scrollView = [[UIScrollView alloc] init];
-
     scrollView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
 
     cellImageView = [[UIImageView alloc] init];
-    cellImageView.contentMode = UIViewContentModeCenter;
-
-    
+    cellImageView.contentMode = UIViewContentModeScaleAspectFit;
+   
     if (originalPic) {
         cellImageView.image = originalPic;
         [self centerImage];
@@ -58,14 +55,12 @@
                 errorLabel.textAlignment = NSTextAlignmentCenter;
                 [self.view addSubview:errorLabel];
             }
-
             [MBProgressHUD hideHUDForView:self.view animated:YES];
         }];
     }
     
     [scrollView addSubview:cellImageView];
     [self.view addSubview:scrollView];
-    
 }
 
 

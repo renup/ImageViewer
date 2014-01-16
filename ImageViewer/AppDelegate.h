@@ -13,8 +13,6 @@
 {
     Reachability* internetReach;
     Reachability* wifiReach;
-    UIImageView	*networkErrorIcon;
-    UILabel	*networkErrorLabel;
     UIView *networkView;
 }
 

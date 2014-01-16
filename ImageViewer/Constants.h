@@ -6,7 +6,10 @@
 //  Copyright (c) 2014 Renu Punjabi. All rights reserved.
 //
 
+
+//This class contains all the constants used through out the project. It is shared across the whole application.
 #import <Foundation/Foundation.h>
+
 
 @interface Constants : NSObject
 

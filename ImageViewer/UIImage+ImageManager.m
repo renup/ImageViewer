@@ -21,18 +21,18 @@
     return newImage;
 }
 
--(UIImage *)cropImage:(UIImage *)inputImage
+-(UIImage *)cropImage
 {
     CGRect inputImageRect;
 
-    if (inputImage.size.width == inputImage.size.height){
-        return inputImage;
+    if (self.size.width == self.size.height){
+        return self;
     }
     else{
-        if (inputImage.size.width < inputImage.size.height)
-            inputImageRect = CGRectMake(0, 0, inputImage.size.width, inputImage.size.width);
+        if (self.size.width < self.size.height)
+            inputImageRect = CGRectMake(0, 0, self.size.width, self.size.width);
         else
-            inputImageRect = CGRectMake(0, 0, inputImage.size.height, inputImage.size.height);
+            inputImageRect = CGRectMake(0, 0, self.size.height, self.size.height);
     }
     
     CGImageRef imageRef = CGImageCreateWithImageInRect(self.CGImage, inputImageRect);

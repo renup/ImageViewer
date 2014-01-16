@@ -6,8 +6,10 @@
 //  Copyright (c) 2014 Renu Punjabi. All rights reserved.
 //
 
+
+//This class displays the original image selected in MasterViewController
 #import <UIKit/UIKit.h>
-#import <QuartzCore/QuartzCore.h>
+
 
 @interface DetailViewController : UIViewController {
     UIScrollView* scrollView;
